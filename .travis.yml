@@ -4,8 +4,8 @@ services:
   - docker
 
 env:
-  - VERSION=2.4
-  - VERSION=2.4 VARIANT=alpine
+  - VERSION=2.4 APACHE_VER=2.4
+  - VERSION=2.4 VARIANT=alpine APACHE_VER=2.4
 
 script:
   - cd ./"${APACHE_VER:0:3}"/alpine
