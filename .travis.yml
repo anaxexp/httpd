@@ -1,0 +1,15 @@
+language: bash
+
+services:
+  - docker
+
+env:
+  - VERSION=2.4
+  - VERSION=2.4 VARIANT=alpine
+
+script:
+  - cd ./"${APACHE_VER:0:3}"/alpine
+  - travis_retry make
+
+after_success:
+  - . "${TRAVIS_BUILD_DIR}/release.sh"
