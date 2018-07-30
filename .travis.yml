@@ -8,9 +8,8 @@ env:
   - VERSION=2.4 VARIANT=alpine
 
 script:
-  - make debug
   - cd ./"${VERSION:0:3}"/alpine
-  - travis_retry make
+  - travis_retry make debug && make
 
 after_success:
   - . "${TRAVIS_BUILD_DIR}/release.sh"
