@@ -1,12 +1,26 @@
 -include env_make
 
+MAKEFLAGS += --warn-undefined-variables
+.DEFAULT_GOAL := build
+.PHONY: *
+
 APACHE_VER ?= 2.4.34
 
 TAG ?= $(APACHE_VER)
-REPO = anaxexp/httpd
+namespace ?= anaxexp
+REPO = $(namespace)/httpd
 NAME = httpd-$APACHE_VER()
 
-.PHONY: build test push shell run start stop logs clean release
+ifneq ($(STABILITY_TAG),)
+    ifneq ($(TAG),latest)
+        override TAG := $(TAG)-$(STABILITY_TAG)
+    endif
+endif
+
+## Display this help message
+help:
+	@awk '/^##.*$$/,/[a-zA-Z_-]+:/' $(MAKEFILE_LIST) | awk '!(NR%2){print $$0p}{p=$$0}' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' | sort
+
 
 default: build
 
@@ -38,3 +52,15 @@ clean:
 	-docker rm -f $(NAME)
 
 release: build push
+
+## Print environment for build debugging
+debug:
+	@echo APACHE_VER=$(APACHE_VER)
+	@echo TAG=$(TAG)
+	@echo REPO=$(REPO)
+	@echo NAME=$(NAME)
+	@echo namespace=$(namespace)
+
+check_var = $(foreach 1,$1,$(__check_var))
+__check_var = $(if $(value $1),,\
+	$(error Missing $1 $(if $(value 2),$(strip $2))))

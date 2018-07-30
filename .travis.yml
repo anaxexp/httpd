@@ -8,6 +8,7 @@ env:
   - VERSION=2.4 VARIANT=alpine
 
 script:
+  - make debug
   - cd ./"${VERSION:0:3}"/alpine
   - travis_retry make
 
