@@ -4,12 +4,11 @@ services:
   - docker
 
 env:
-  - VERSION=2.4
-  - VERSION=2.4 VARIANT=alpine
+  - APACHE_VER=2.4.34 TAGS=2.4.34,latest
 
 script:
-  - cd ./"${VERSION:0:3}"/alpine
-  - travis_retry make debug && make
+  - cd ./"${APACHE_VER:0:3}"/alpine
+  - travis_retry make
 
 after_success:
   - . "${TRAVIS_BUILD_DIR}/release.sh"
