@@ -9,7 +9,7 @@ APACHE_VER ?= 2.4.34
 TAG ?= $(APACHE_VER)
 namespace ?= anaxexp
 REPO = $(namespace)/httpd
-NAME = httpd-$APACHE_VER()
+NAME = httpd-$(APACHE_VER)
 
 ifneq ($(STABILITY_TAG),)
     ifneq ($(TAG),latest)
