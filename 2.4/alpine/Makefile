@@ -11,10 +11,10 @@ namespace ?= anaxexp
 REPO = $(namespace)/httpd
 NAME = httpd-$APACHE_VER()
 
-ifneq ($(STABILITY_TAG),)
-    ifneq ($(TAG),latest)
-        override TAG := $(TAG)-$(STABILITY_TAG)
-    endif
+ifeq ($(BASE_IMAGE_STABILITY_TAG),)
+    BASE_IMAGE_TAG := $(ALPINE_VER)
+else
+    BASE_IMAGE_TAG := $(ALPINE_VER)-$(BASE_IMAGE_STABILITY_TAG)
 endif
 
 ## Display this help message
@@ -25,7 +25,9 @@ help:
 default: build
 
 build:
-	docker build -t $(REPO):$(TAG) -f Dockerfile.anaxexp ./
+	docker build -t $(REPO):$(TAG) \
+	        -f Dockerfile.anaxexp \
+			--build-arg BASE_IMAGE_TAG=$(BASE_IMAGE_TAG) ./
 
 test:
 	IMAGE=$(REPO):$(TAG) ./test.sh
