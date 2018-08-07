@@ -1,6 +1,6 @@
 ARG BASE_IMAGE_TAG
 
-FROM anaxexp/alpine:${BASE_IMAGE_TAG}
+FROM wodby/alpine:${BASE_IMAGE_TAG}
 
 # ensure www-data user exists
 RUN set -x \
@@ -118,7 +118,7 @@ RUN set -eux; \
 		--build="$gnuArch" \
 		--prefix="$HTTPD_PREFIX" \
 		--enable-mods-shared=reallyall \
-		--with-mpm=event \
+		--enable-mpms-shared=all \
 	; \
 	make -j "$(nproc)"; \
 	make install; \
